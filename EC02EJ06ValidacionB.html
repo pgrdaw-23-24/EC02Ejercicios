@@ -1,0 +1,84 @@
+<!--
+6.CONFIRMACIÓN DE EMAIL
+Realiza un formulario que tenga dos campos de email con las mismas validaciones que el ejercicio
+anterior. Deberá validar antes del envío si los dos emails son iguales.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form id="form" name="form" action="" method="POST">
+        <label for="email1">email1:</label>
+        <input id="email1" name="email1" type="text"><br>
+        <label for="email2">email2:</label>
+        <input id="email2" name="email2" type="text"><br>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+
+        const listaServidores = ["terra.es", "myspace.com", "arrakis.es", "tuenti.es"]
+        const form = document.getElementById('form')
+
+        form.onsubmit = enviarEmail
+
+        function enviarEmail(e) {
+            e.preventDefault()
+            let email1 = document.getElementById('email1')
+            let email2 = document.getElementById('email2')
+            if (!validarEmail(email1) || !compararEmails(email1, email2)) {
+                console.log('ERROR: Email no enviado.')
+                return
+            } else {
+                console.log('OK: Enviando email...')
+            }
+            form.submit()
+        }
+
+        function compararEmails(email1, email2) {
+            if (email1.value == email2.value) {
+                console.log('OK: Los emails son iguales.')
+                return true
+            } else {
+                console.log('ERROR: Los emails son diferentes.')
+                return false
+            }
+            return (email1.value = email2.value)
+        }
+
+        function validarEmail(email) {
+            let emailValido = false
+            console.log('Validando email ...')
+            trozos = email.value.split('@')      // dividir por la @
+            if (trozos.length != 2               // comprobar que hay dos trozos
+                || trozos[0].length < 3) {       // y que la longitud de la primera parte es >2
+                console.log('ERROR: Formato de email incorrecto.')
+                emailValido = false
+            } else {                            // comprobar servidor está en lista
+                servidor = trozos[1]
+                servidores = new Set(listaServidores)
+                if (!servidores.has(servidor)) {
+                    emailValido = false
+                    console.log('ERROR: Servidor no admitido.')
+                }
+                else {
+                    emailValido = true
+                    console.log('OK: Email válido')
+                }
+            }
+            return emailValido
+        }
+
+    </script>
+
+</body>
+
+</html>

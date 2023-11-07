@@ -1,0 +1,70 @@
+<!--
+5.VALIDACIÓN DE EMAIL
+Realiza un formulario que pida una dirección de email y la valide antes de enviarla:
+• Debe validar si el email sigue el formato texto@servidor.loquesea
+• Además de validar el formato anterior, debe comprobar que servidor.loquesea este como
+servidor admitido en un array de servidores llamado “listaServidores”.
+Dicho array debe ser definido a mano en el código. Por ejemplo
+let listaServidores=[ "terra.es" , "myspace.com", "arrakis.es", "tuenti.es"];
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form id="form" action="" method="POST">
+        <label for="email">email: </label>
+        <input id="email" name="email" type="text">
+        <button id="submit" type="submit">enviar</button>
+    </form>
+
+    <script>
+
+        let listaServidores = ["terra.es", "myspace.com", "arrakis.es", "tuenti.es"]
+
+        form = document.getElementById('form')
+        input = document.getElementById('email')
+        enviar = false
+
+        form.onsubmit = validarEmail
+
+        function validarEmail(e) {
+            console.log('Validando email ...')
+            email = input.value.split('@')      // dividir por la @
+            if (email.length != 2               // comprobar que hay dos trozos
+                || email[0].length < 3) {       // y que la longitud de la primera parte es >2
+                console.log('ERROR: Formato de email incorrecto')
+                enviar = false
+            } else {                            // comprobar servidor está en lista
+                servidor = email[1]
+                servidores = new Set(listaServidores)
+                if (!servidores.has(servidor)) {
+                    enviar = false
+                    console.log('ERROR: Servidor no admitido')
+                }
+                else {
+                    enviar = true
+                    console.log('Formato y servidor OK')
+                }
+            }
+            // enviar email
+            if (!enviar) {
+                console.log('ERROR: Email no enviado')
+                e.preventDefault()
+            } else {
+                console.log('Email enviado OK')
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<!--
+    2.EJERCICIO 2: ELEMENTOS AUTODESTRUCTIBLES
+Realiza un programa que tenga 10 elementos <p> y al hacer clic sobre ellos desaparezcan (se
+oculten) y al hacer click con el botón derecho los elimine del DOM (no se debe mostrar el menú de
+contexto). También deberá tener un botón “Reaparecer” que hará que aparezcan todos los
+elementos desaparecidos (pero no los eliminados).
+-->
+
+<body>
+
+    <script>
+
+        // evitar menu contextual boton derecho
+        // https://www.tutorialspoint.com/how-to-disable-right-clicking-on-a-website-using-javascript
+        document.addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+        });
+
+        // crear e inicializar set donde se guardan los párrafos mostrables
+        let setP = new Set()
+        for (i = 0; i < 10; i++) {
+            setP.add('p' + i)
+        }
+        console.log(setP)
+
+        // inicializar parrafos y botón
+        reaparecer()
+
+        // capturar eventos cuando se pulse en el p
+        document.onclick = botonIzq
+        document.onauxclick = botonDer
+
+        // funcion reaparecer
+        function reaparecer() {
+
+            // borrar todo
+            document.body.innerHTML = ''
+
+            // crear boton reaparecer
+            let bReaparecer = document.createElement('button')
+            bReaparecer.id = 'bReaparecer'
+            bReaparecer.innerText = 'Reaparecer'
+            document.body.append(bReaparecer)
+
+            // crear elementos p con id único
+            for (p of setP) {
+                let parrafo = document.createElement('p')
+                parrafo.id = p
+                parrafo.innerHTML = 'Párrafo: ' + p
+                document.body.append(parrafo)
+            }
+        }
+
+        function botonIzq(event) {
+            if (event.target.tagName === 'P') {
+                event.target.style.visibility = 'hidden'        // oculta el elemento
+            } else if (event.target.id === 'bReaparecer') {
+                reaparecer()
+            }
+        }
+
+        function botonDer() {
+            console.log('boton der')
+            if (event.target.tagName === 'P') {
+                setP.delete(event.target.id)                    // borra el elemento en el set
+                document.body.removeChild(event.target)         // elimina el elemento
+            } else if (event.target.id === 'bReaparecer') {
+                reaparecer()
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>

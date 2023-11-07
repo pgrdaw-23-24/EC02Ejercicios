@@ -1,0 +1,125 @@
+<!--
+    4.EJERCICIO 4: ÍNDICE DE UNA PÁGINA WEB
+Prepara un código JavaScript que, añadido a una página web, genere una tabla de contenido a
+partir de las etiquetas <h1>, <h2>...<h6> El índice lo generará dentro de una etiqueta <pre>,
+añadiendo espacios para que quede identado.
+El resultado de este ejercicio debería ser una página html con el script, pero el script ha de ser
+genérico y debería poder funcionar en cualquier otra página.
+
+<pre>
+1.- Tema 1
+1.1.- Apartado 1
+1.2.- Apartado 1
+2.- Tema 2
+2.1.- Introducción
+</pre>
+
+-->
+
+<html>
+
+<body>
+    <h1>Tema 1</h1>
+    <div>
+        <h2>Apartado 1</h2>
+    </div>
+    <h2>Apartado 2</h2>
+    <h1>Tema 2</h1>
+    <h2>Introducción</h2>
+</body>
+
+<script>
+
+    // inicializar variables y constantes
+    let arbol = []
+    let indice = ""
+    const inicio = document.body
+    let nodo = inicio
+    const busqueda = new Map([
+        ['H1', 1],
+        ['H2', 2],
+        ['H3', 3],
+        ['H4', 4],
+        ['H5', 5],
+        ['H6', 6],
+    ])
+
+    // comienzo programa
+    explorar()
+    mostrar()
+
+    // explora el nodo actual
+    function explorar() {
+        do {
+            if (encontrar()) {      // si es de los buscados
+                podar()             // recorta arbol innecesario
+                crecer()            // incrementa posicion en arbol
+                guardar()           // añade linea a indice 
+            }
+            // si tiene hijo lo explora
+            if (nodo.children.length > 0) {
+                nodo = nodo.children[0]
+                explorar()
+            }
+            //si no, si tiene hermano lo explora 
+            else if (nodo.nextElementSibling) {
+                nodo = nodo.nextElementSibling
+                explorar()
+            }
+            // si tampoco
+            else {
+                // busca hacia atrás tios, tios-abuelos... hasta llegar a body
+                do {
+                    nodo = nodo.parentElement
+                } while (!nodo.nextElementSibling && nodo != inicio)
+                // y si encuentra familiar lo explora
+                if (nodo != inicio) {
+                    nodo = nodo.nextElementSibling
+                    explorar()
+                }
+            }
+        } while (nodo != inicio)
+    }
+
+    // comprobar si el nodo está entre los buscados
+    function encontrar() {
+        return busqueda.has(nodo.tagName)
+    }
+
+    // añadir linea al indice
+    function guardar() {
+        // tabulación
+        for (i = 0; i < arbol.length - 1; i++) {
+            indice += "  "
+        }
+        // indice
+        for (b of arbol) {
+            indice += b + "."
+        }
+        indice += "- " + nodo.textContent + "\n"
+    }
+
+    // incrementa la rama correspondiente
+    function crecer() {
+        if (!arbol[busqueda.get(nodo.tagName) - 1]) {
+            arbol[busqueda.get(nodo.tagName) - 1] = 1
+        } else {
+            arbol[busqueda.get(nodo.tagName) - 1]++
+        }
+    }
+
+    // elimina ramas innecesarias
+    function podar() {
+        arbol = arbol.slice(0, busqueda.get(nodo.tagName))
+    }
+
+    // anexar los resultados al body
+    function mostrar() {
+        let pre = document.createElement("pre")
+        pre.innerText = indice
+        inicio.appendChild(pre)
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>Tema 2 - ejercicio 4</title>
+        
+    </head>
+    <body>
+        <h1>Tema 1</h1>
+        <div>
+            <h2>Apartado 1</h2>
+        </div>
+        <h2>Apartado 2</h2>
+        <h1>Tema 2</h1>
+        <h2>Introducción</h2>
+
+        <script>
+            let elemH1 = document.getElementsByTagName("h1");
+            let elemH2 = document.getElementsByTagName("h2");
+            let elemH3 = document.getElementsByTagName("h3");
+            let elemH4 = document.getElementsByTagName("h4");
+            let elemH5 = document.getElementsByTagName("h5");
+            let elemH6 = document.getElementsByTagName("h6");
+
+            let preNode = document.createElement("pre");
+            let texto ="";
+
+            for(let i=0; i< elemH1.length; i++){
+                texto += i+1 + ".- " + elemH1[i].innerHTML + "\n";
+
+                for(let j=0; j < elemH2.length; j++){
+                    texto += "   " + (i+1) + "." + (j+1) + ".- " + elemH2[j].innerHTML + "\n";
+                }
+            }
+            preNode.innerHTML = texto;
+
+            document.body.appendChild(preNode);
+            
+        </script>
+    </body>
+</html>

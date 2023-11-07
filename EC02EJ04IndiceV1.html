@@ -1,0 +1,63 @@
+<!--
+    4.EJERCICIO 4: ÍNDICE DE UNA PÁGINA WEB
+Prepara un código JavaScript que, añadido a una página web, genere una tabla de contenido a
+partir de las etiquetas <h1>, <h2>...<h6> El índice lo generará dentro de una etiqueta <pre>,
+añadiendo espacios para que quede identado.
+El resultado de este ejercicio debería ser una página html con el script, pero el script ha de ser
+genérico y debería poder funcionar en cualquier otra página.
+
+<pre>
+1.- Tema 1
+1.1.- Apartado 1
+1.2.- Apartado 1
+2.- Tema 2
+2.1.- Introducción
+</pre>
+
+-->
+
+<html>
+
+
+<body>
+    <h1>Tema 1</h1>
+    <div>
+        <h2>Apartado 1</h2>
+    </div>
+    <h2>Apartado 2</h2>
+    <h1>Tema 2</h1>
+    <h2>Introducción</h2>
+</body>
+
+<script>
+
+    let busqueda = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6'])
+    let indice = []
+    let resultado = "<pre>\n"
+
+    explorar(document.body)
+
+    function explorar(nodo) {
+
+        if (busqueda.has(nodo.tagName)) {
+            ++indice[indice.length - 1]
+            resultado = resultado + indice + " " + hijo.textContent + "\n"
+        }
+
+        if (nodo.children) {
+            indice.push(0)
+            for (hijo of nodo.children) {
+                explorar(hijo)
+            }
+        } else {
+            indice.pop()
+        }
+    }
+
+    resultado = resultado + "</pre>"
+    console.log(resultado)
+
+</script>
+
+
+</html>

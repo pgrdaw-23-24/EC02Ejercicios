@@ -1,0 +1,101 @@
+<!--
+    4.EJERCICIO 4: ÍNDICE DE UNA PÁGINA WEB
+Prepara un código JavaScript que, añadido a una página web, genere una tabla de contenido a
+partir de las etiquetas <h1>, <h2>...<h6> El índice lo generará dentro de una etiqueta <pre>,
+añadiendo espacios para que quede identado.
+El resultado de este ejercicio debería ser una página html con el script, pero el script ha de ser
+genérico y debería poder funcionar en cualquier otra página.
+
+<pre>
+1.- Tema 1
+1.1.- Apartado 1
+1.2.- Apartado 1
+2.- Tema 2
+2.1.- Introducción
+</pre>
+
+-->
+
+<html>
+
+<body>
+    <h1>Tema 1</h1>
+    <div>
+        <h2>Apartado 1</h2>
+    </div>
+    <h2>Apartado 2</h2>
+    <h1>Tema 2</h1>
+    <h2>Introducción</h2>
+</body>
+
+<script>
+
+    let busqueda = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6'])
+    let arbol = []
+    let nodo = document.body
+    let indice = "<pre>\n"
+
+    explorar()
+    indice += "</pre>"
+    console.log(indice)
+
+    function explorar() {
+
+        // si el elemento es uno de los buscados:
+        // - incrementar último valor del array árbol
+        // - anexar a indice el arbol y el texto del elemento
+        if (comprobar()) {      
+            arbol[arbol.length - 1]++
+            indice += arbol + ",- " + nodo.textContent + "\n"
+        }
+
+        // si tiene hijo, lo explora
+        // si no tiene hijo pero tiene hermano, lo explora
+        // si no tine hijos ni hermanos repite padre() 
+        // hasta encontrar hermano y lo explora
+        // o hasta llegar a body y termina la exploración
+        if (nodo.children[0]) {
+            hijo()
+            explorar()
+        } else  
+        if (nodo.nextElementSibling) {
+            hermano()
+            explorar()
+        } else {    
+            if (nodo.parentElement != document.body) {
+                do {
+                    padre()
+                } while (!nodo.nextElementSibling)
+                hermano()
+                explorar()
+            }
+        }
+    }
+
+
+    function comprobar() {
+        if (busqueda.has(nodo.tagName)) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+
+    function hijo() {
+        arbol.push(0)
+        nodo = nodo.children[0]
+    }
+
+    function padre() {
+        arbol.pop()
+        nodo = nodo.parentElement
+    }
+
+    function hermano() {
+        nodo = nodo.nextElementSibling
+    }
+
+</script>
+
+</html>

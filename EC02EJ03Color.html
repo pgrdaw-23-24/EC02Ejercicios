@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<!--
+    3.EJERCICIO 3: CAMBIO DE COLOR
+Crea una página HTML con un DIV que contenga en su interior al menos tres DIV de diferentes
+colores. Al pulsar uno de los <div> el padre se podrá del color de ese elemento.
+Debes usar la misma función para manejar los eventos en los tres <div> (no vale que hagas una
+función específica para cada uno)
+-->
+
+<body>
+
+    <div id="padre" style="background-color: lightgray;">
+        padre
+        <div class="hijo" style="background-color: red;">hijo1</div>
+        <div class="hijo" style="background-color: orange;">hijo2</div>
+        <div class="hijo" style="background-color: green;">hijo3</div>
+    </div>
+
+    <script>
+
+        document.onclick = color
+
+        // asignar al padre el color del hijo
+        function color(e) {
+            if (e.target.className === 'hijo') {
+                document.getElementById('padre').style.backgroundColor =
+                    e.target.style.backgroundColor
+            } else if (e.target.id === 'padre') {
+                document.getElementById('padre').style.backgroundColor = 'lightgray'
+            }
+        }
+
+    </script>
+
+    <style>
+        div {
+            padding: 20px;
+            margin: 20px;
+            border: 5px solid black;
+            text-align: center;
+        }
+    </style>
+
+</body>
+
+</html>
